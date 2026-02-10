@@ -62,7 +62,6 @@ func main() {
 		return
 	}
 
-
 	req, err := http.NewRequest("POST", "https://hackattic.com/challenges/reading_qr/solve?access_token=8f3a9cb1bc4572d2", buffer)
 	if err != nil {
 		fmt.Printf("error creating new request: %v", err)
@@ -70,15 +69,15 @@ func main() {
 	}
 
 	client := &http.Client{}
-	res, err = client.Do(req)
+	resp, err := client.Do(req)
 	if err != nil {
 		fmt.Printf("error initiating request-response: %v", err)
 		return
 	}
-	defer res.Body.Close()
+	defer resp.Body.Close()
 
 	var result any
-	err = json.NewDecoder(res.Body).Decode(&result)
+	err = json.NewDecoder(resp.Body).Decode(&result)
 	if err != nil {
 		fmt.Printf("error decoding json: %v", err)
 		return
@@ -113,24 +112,24 @@ func downloadImage(imageURL string) error {
 func getQRCode(path string) (*gozxing.Result, error) {
 	f, err := os.Open(path)
 	if err != nil {
-		return &gozxing.Result{}, err
+		return nil, err
 	}
 	defer f.Close()
 
 	img, _, err := image.Decode(f)
 	if err != nil {
-		return &gozxing.Result{}, err
+		return nil, err
 	}
 
 	bmp, err := gozxing.NewBinaryBitmapFromImage(img)
 	if err != nil {
-		return &gozxing.Result{}, err
+		return nil, err
 	}
 
 	qrReader := qrcode.NewQRCodeReader()
 	result, err := qrReader.Decode(bmp, nil)
 	if err != nil {
-		return &gozxing.Result{}, err
+		return nil, err
 	}
 
 	return result, nil

@@ -15,7 +15,6 @@ type Response struct {
 	BytesString string `json:"bytes"`
 }
 
-
 type Unpack struct {
 	Int             int32   `json:"int"`
 	Uint            uint32  `json:"uint"`
@@ -24,7 +23,6 @@ type Unpack struct {
 	Double          float64 `json:"double"`
 	BigEndianDouble float64 `json:"big_endian_double"`
 }
-
 
 func main() {
 	res, err := http.Get("https://hackattic.com/challenges/help_me_unpack/problem?access_token=8f3a9cb1bc4572d2")
